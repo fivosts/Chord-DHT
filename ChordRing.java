@@ -13,16 +13,11 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 import java.util.concurrent.ThreadLocalRandom;
-//import java.lang.StringBuilder;
 /*
  * COMMAND EXAMPLES:
- * insert,eimaste omadara,100
- * insert,Love is in the air,97
- * query,eimaste omadara
- * depart,708
- * delete,Love is in the air
- * delete,akuro_pou_den_uparxei
- * query,*
+ * insert,Something,100
+ * query,Something
+ * delete,Something
  */
 
 public class ChordRing {
@@ -42,7 +37,6 @@ public class ChordRing {
 	}
 	
 	public static void main_forward_to(String message, int replicas, String hostname, int port){
-		//System.err.println(message);
 		String message_final;
 		String []message_with_replicas = message.split("-");
 		if (message_with_replicas.length >= 3 ) message_final = message_with_replicas[0]+"-"+replicas+"-"+message_with_replicas[1]+"-"+message_with_replicas[2];
@@ -86,14 +80,13 @@ public class ChordRing {
 		
 		BufferedReader input = new BufferedReader(new InputStreamReader(System.in));
 		//System.out.println("Please enter the <number of desired nodes>: ");
-		int number_of_nodes = 10;//Integer.parseInt(input.readLine());
+		int number_of_nodes = 10;	//Integer.parseInt(input.readLine());
 		//System.out.println("Please enter the <log of ring size>: ");
 		int M = 6; //Integer.parseInt(input.readLine());
-		double ring = Math.pow(2,M);
+		double ring = Math.pow(2,M);//Chord ring size is defined to be a power of 2 (256,512,1024,.....)
 		int ring_size = (int) Math.round(ring);
 		int globalc; // global node counter
-		//Number of replicas
-		int k = 5;
+		int k = 5; //this is the replication factor
 		List<Node> nodelist = new ArrayList<Node>();
 		
 		System.out.printf("Initial number of nodes: %d ring size: %d replication factor: %d\n",number_of_nodes,ring_size,k);
@@ -104,9 +97,6 @@ public class ChordRing {
 			nodelist.add(n);
 		}
 		fix_nodes(nodelist);
-		/*(for (Node n: nodelist){
-			System.out.println(n.getmyId());
-		}*/
 		for (Node n: nodelist){
 			n.start();
 		}
@@ -118,7 +108,6 @@ public class ChordRing {
 		while(true){
 			System.out.println("Type your command: ");
 			String command = input.readLine();	
-			//System.out.println("command IS: "+ command);
 			String option = command.split(",")[0]; //insert,query,delete,join,depart
 			if (option.equals("insert") || option.equals("delete") || option.equals("query")) {
 				int len = nodelist.size();
@@ -126,7 +115,6 @@ public class ChordRing {
 				int randomNum = ThreadLocalRandom.current().nextInt(0, len-1);
 				Node init = nodelist.get(randomNum);
 				main_forward_to(command + "-" + init.getMyname()+"-"+ init.getmyPort()+"\n", k, init.getMyname(), init.getmyPort());
-			//	main_forward_to("join-"+n.successor.getmyId() +"\n", k, nodelist.get(0).getMyname(), nodelist.get(0).getmyPort());
 				System.out.println("Main says: I forwarded the command to Node with ID: " + init.getmyId());
 				try {
 					Thread.sleep(5000);
@@ -172,7 +160,6 @@ public class ChordRing {
 				try {
 					Thread.sleep(8000);
 				} catch (InterruptedException e) {
-					// TODO Auto-generated catch block
 					e.printStackTrace();
 				}
 				globalc++;
@@ -180,9 +167,6 @@ public class ChordRing {
 			}
 			
 		}
-		
-		
-		
 	}
 
 	private static void fix_nodes(List<Node> nodelist) {
