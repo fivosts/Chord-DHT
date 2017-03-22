@@ -229,7 +229,6 @@ public class Node extends Thread implements Comparable<Node> {
 	        if (message.length == 4){
 	        	if (Integer.parseInt(message[3]) == myport){ // message[3] is the initial host's port
 	        		// I am the initial node
-	        		//System.out.println("Node "+myid+": I am init");
 	        		IamInit = true;
 	        	}
 	        }
@@ -249,13 +248,11 @@ public class Node extends Thread implements Comparable<Node> {
 	        if (message.length == 4){
 	        	if (Integer.parseInt(message[3]) == myport){ // message[3] is the initial host's port
 	        		// I am the initial node
-	        		//System.out.println("Node "+myid+": I am init");
 	        		IamInit = true;
 	        	}
 	        }
 	        String []splittedMessage = theQuery.split(",");
 	        // decide what to do according to the type of query
-	        
 	        
 	        if (splittedMessage[0].equals("insert")) {
 	        	if (splittedMessage.length != 3){
@@ -274,7 +271,6 @@ public class Node extends Thread implements Comparable<Node> {
 	        			// if I did the insert
 	        			String myAnswer = "node "+ myid +" Inserted pair ("+ splittedMessage[1] + "," + splittedMessage[2]+")";
 	        			if (IamInit){
-	        				//System.err.println(myAnswer); //DEBUGGING
 	        				System.err.println("Node "+ myid + ": " + myAnswer);
 	        			}
 	        			else {
@@ -320,13 +316,9 @@ public class Node extends Thread implements Comparable<Node> {
 							e.printStackTrace();
 							System.exit(1);
 						}
-        	//			if(queryresult>0){
-//DEBUGGING     			System.out.println(queryresult);
-        		//		}
         				if (queryresult == -1){
         					System.out.println("Node "+myid+": queryresult = "+queryresult);
-        					//I am not the responsible node to talk about it :/
-        					//ask the next one :(
+        					//I am not the responsible node to talk about it 
         					forward_to(message_to_handle+"\n",replica_counter, successor.getMyname(), successor.getmyPort());
             				System.out.println("Node "+myid+": I forwarded the query to "+successor.getMyname()+":"+successor.getmyPort());
         				}
@@ -345,7 +337,6 @@ public class Node extends Thread implements Comparable<Node> {
             			            System.out.println(e);
             			         }
         					}
-        					//System.out.println(splittedMessage[1]+": Not found");
         				}
         				
         				if (queryresult == -3){
@@ -380,7 +371,6 @@ public class Node extends Thread implements Comparable<Node> {
         			else{
         				if (IamInit){
         					arrived ++;
-        					//System.out.println("Node "+myid+ ":  Arrived = "+arrived);
         					if (arrived == 2){
 	        					//stop
 	        					arrived=0;
@@ -405,7 +395,6 @@ public class Node extends Thread implements Comparable<Node> {
 	        				if (!files.isEmpty()){
         						for (String key : files.keySet()) {
 	        						forward_to("ANSWER-"+key + " " + files.get(key)+"\n",replica_counter, message[2], Integer.parseInt(message[3]));
-	        						//System.out.println("Node "+myid+": forwarded to "+message[2] +":"+message[3]);
 	        						try {
 	        				            // thread to sleep for 1000 milliseconds
 	        				            sleep(500);
@@ -525,7 +514,6 @@ public class Node extends Thread implements Comparable<Node> {
 	        	List<String> to_remove = new ArrayList<String>();
 	        	if (myid == hisSuccessorID ){
 	        		for (String key : files.keySet()) {
-	        			//System.out.println(key);
 	        			try {
 							if (ChordRing.calculate_sha1(key, ring_size) <= predecessor.getmyId()){
 								System.out.println("Node "+myid+": " +"forwarding key "+key+ " to "+predecessor.getMyname()+":"+predecessor.getmyPort());
