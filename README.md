@@ -8,3 +8,5 @@ The responsible node for storing a <key,value> element is based on map reduce an
 Each Node in this Distributed emulator is a thread and communication is established through sockets.
 
 Requests.txt is an example document with sequential commands that can be inserted directly to the program.
+
+<i>This distributed database emulator was created as an assignment in academic course "Distributed Systems"</i>
