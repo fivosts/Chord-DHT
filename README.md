@@ -9,4 +9,4 @@ Each Node in this Distributed emulator is a thread and communication is establis
 
 Requests.txt is an example document with sequential commands that can be inserted directly to the program.
 
-<i>This distributed database emulator was created as an assignment in academic course "Distributed Systems"</i>
+<i>This distributed database emulator was created as a term project in academic course "Distributed Systems"</i>
